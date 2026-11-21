@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <meta name="description" content="Mehedi Hasan — WordPress, Elementor, WooCommerce & Squarespace expert. 300+ websites delivered since 2020." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f5f6f8;
+      --bg-2: #eceef2;
+      --card: #eef0f3;
+      --card-hi: #f7f8fa;
+      --line: #dfe2e7;
+      --ink: #23262d;
+      --ink-2: #6b7280;
+      --ink-3: #9aa1ad;
+      --violet-1: #7566ff;
+      --violet-2: #3a28d6;
+      --radius: 22px;
+      --shadow: 0 1px 0 #fff inset, 0 10px 30px -12px rgba(30, 35, 50, .18);
+      --font-head: "Inter Tight", "Inter", Arial, sans-serif;
+      --font-body: "Inter", Arial, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+      /* fluid unit: 1em = 16px @ 1440 */
+      --size-font: calc(clamp(992px, 100vw, 1920px) / 90);
+    }
+    @media (max-width: 991px) { :root { --size-font: calc(clamp(768px, 100vw, 991px) / 52.125); } }
+    @media (max-width: 767px) { :root { --size-font: 16px; } }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scrollbar-width: none; }
+    body::-webkit-scrollbar { display: none; }
+    body {
+      margin: 0;
+      font-size: var(--size-font);
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    h1, h2, h3, p { margin: 0; }
+    .container { max-width: 80em; margin: 0 auto; padding: 0 2.5em; }
+    @media (max-width: 767px) { .container { padding: 0 16px; } }
+
+    /* ---------- shared bits ---------- */
+    .pill {
+      display: inline-flex; align-items: center; gap: .5em;
+      padding: .45em .9em;
+      font-size: .8125em; color: var(--ink-2);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      box-shadow: 0 2px 6px -2px rgba(0,0,0,.08);
+    }
+    .pill .dot { width: .5em; height: .5em; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.18); }
+    .btn {
+      display: inline-flex; align-items: center; gap: .6em;
+      padding: .85em 1.3em;
+      font: 500 .9375em/1 var(--font-body);
+      color: #fff; border: 0; border-radius: 12px; cursor: pointer;
+      background: linear-gradient(180deg, #45474d, #16171a);
+      box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 8px 18px -6px rgba(0,0,0,.45);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 14px 24px -8px rgba(0,0,0,.5); }
+    .btn.violet {
+      background: linear-gradient(180deg, var(--violet-1), var(--violet-2));
+      box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 12px 30px -8px rgba(80,60,255,.6);
+    }
+    .btn svg { width: 1.1em; height: 1.1em; transition: transform .25s; }
+    .btn:hover svg { transform: translateX(3px); }
+    .ico { width: 1.25em; height: 1.25em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    .reveal { opacity: 0; transform: translateY(30px); }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+    /* ---------- nav ---------- */
+    .nav {
+      position: fixed; top: 1em; left: 50%; z-index: 50;
+      transform: translateX(-50%);
+      width: min(52em, calc(100% - 32px));
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .5em .5em .5em 1.2em;
+      background: rgba(255,255,255,.75);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 16px;
+      box-shadow: 0 8px 30px -14px rgba(0,0,0,.2);
+    }
+    .nav_logo { font: 600 1.25em/1 var(--font-head); letter-spacing: -.03em; display: flex; align-items: center; gap: .4em; }
+    .nav_logo i { width: .7em; height: .7em; border-radius: 4px; background: linear-gradient(135deg, var(--violet-1), #22d3ee); display: block; }
+    .nav_links { display: flex; gap: 2em; font-size: .875em; color: var(--ink-2); }
+    .nav_links a:hover { color: var(--ink); }
+    .nav .btn { padding: .65em 1em; font-size: .875em; border-radius: 10px; }
+    @media (max-width: 767px) { .nav_links { display: none; } }
+
+    /* ---------- hero ---------- */
+    .hero { position: relative; padding-top: 9em; text-align: center; overflow: hidden; }
+    .hero h1 {
+      margin: .5em auto .35em;
+      max-width: 13em;
+      font: 500 4.5em/1.02 var(--font-head);
+      letter-spacing: -.045em;
+    }
+    .hero p.sub { max-width: 34em; margin: 0 auto 2em; font-size: 1.125em; color: var(--ink-2); line-height: 1.5; }
+    .hero_actions { display: flex; gap: .75em; justify-content: center; flex-wrap: wrap; }
+    .btn.ghost { background: #fff; color: var(--ink); box-shadow: 0 0 0 1px var(--line) inset, 0 6px 14px -8px rgba(0,0,0,.2); }
+    @media (max-width: 767px) { .hero h1 { font-size: 2.6em; } .hero { padding-top: 7em; } }
+
+    /* isometric stage */
+    .iso { position: relative; height: 30em; margin-top: -1em; perspective: 1800px; pointer-events: none; }
+    .iso_plane {
+      position: absolute; left: 50%; top: 50%;
+      width: 56em; height: 56em; margin: -28em 0 0 -28em;
+      transform: rotateX(58deg) rotateZ(-45deg) scale(.82);
+      transform-style: preserve-3d;
+    }
+    .iso_grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(#e3e6eb 1px, transparent 1px), linear-gradient(90deg, #e3e6eb 1px, transparent 1px);
+      background-size: 4em 4em;
+      -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent);
+              mask-image: radial-gradient(closest-side, #000 30%, transparent);
+    }
+    .iso_lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .iso_lines .base { fill: none; stroke: #cfd3da; stroke-width: 2; }
+    .iso_lines .flow { fill: none; stroke: var(--violet-1); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 60 900; }
+    .tile {
+      position: absolute; width: 6em; height: 6em;
+      border-radius: 1em;
+      background: linear-gradient(135deg, #ffffff, #e9ebef);
+      display: grid; place-items: center;
+      color: #b9bec8;
+      box-shadow:
+        -1px 1px 0 #dcdfe4, -2px 2px 0 #d8dbe1, -3px 3px 0 #d4d8de, -4px 4px 0 #d0d4da,
+        -5px 5px 0 #ccd0d7, -6px 6px 0 #c8ccd3, -7px 7px 0 #c4c9d0, -8px 8px 0 #c0c5cd,
+        -30px 30px 40px rgba(40,45,60,.18);
+    }
+    .tile svg { width: 2.6em; height: 2.6em; transform: rotateZ(45deg); stroke-width: 1.6; }
+    .tile span { position: absolute; font: 600 1em var(--font-head); transform: rotateZ(45deg); }
+    .tile.core {
+      width: 11em; height: 11em; border-radius: 1.6em;
+      background: linear-gradient(135deg, #8f7bff 0%, #5a46f0 45%, #2fd3f0 100%);
+      color: #fff;
+      box-shadow:
+        -1px 1px 0 #5240de, -2px 2px 0 #4c3ad6, -3px 3px 0 #4636ce, -4px 4px 0 #4032c6,
+        -5px 5px 0 #3a2ebe, -6px 6px 0 #352ab6, -7px 7px 0 #3027ae, -8px 8px 0 #2b24a6,
+        -9px 9px 0 #27219e, -10px 10px 0 #231e96, -12px 12px 60px rgba(100,80,255,.55);
+    }
+    .tile.core span { font-size: 3.4em; letter-spacing: -.05em; text-shadow: 0 2px 10px rgba(0,0,0,.2); }
+    .hero_glow { position: absolute; left: 50%; top: 62%; width: 40em; height: 20em; transform: translate(-50%,-50%); background: radial-gradient(closest-side, rgba(117,102,255,.25), transparent); filter: blur(10px); }
+    @media (max-width: 767px) { .iso { height: 20em; } .iso_plane { transform: rotateX(58deg) rotateZ(-45deg) scale(.5); } }
+
+    /* ---------- section head (tag + title | text + button) ---------- */
+    section { position: relative; }
+    .block { padding: 8em 0 0; }
+    .block_head { display: grid; grid-template-columns: 1fr 1fr; gap: 3em; align-items: end; margin-bottom: 3em; }
+    .block_head h2 { margin-top: .6em; font: 500 2.6em/1.12 var(--font-head); letter-spacing: -.035em; max-width: 14em; }
+    .block_head p { color: var(--ink-2); line-height: 1.55; font-size: .9375em; margin-bottom: 1.2em; max-width: 34em; }
+    @media (max-width: 767px) { .block_head { grid-template-columns: 1fr; gap: 1.2em; } .block_head h2 { font-size: 2em; } .block { padding-top: 5em; } }
+
+    /* ---------- project block: 2x2 cards + showcase ---------- */
+    .proj_grid { display: grid; grid-template-columns: 1fr 1fr 2fr; grid-template-rows: auto auto; gap: .9em; }
+    .feat {
+      position: relative; overflow: hidden;
+      min-height: 11.5em;
+      padding: 1.3em;
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: transform .35s;
+    }
+    .feat:hover { transform: translateY(-4px); }
+    .feat_top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .feat_icon {
+      width: 2.4em; height: 2.4em; border-radius: .7em;
+      display: grid; place-items: center; color: #fff;
+      background: var(--g);
+      box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 8px 18px -4px var(--glow);
+    }
+    .feat_icon .ico { width: 1.15em; height: 1.15em; }
+    .feat_ghost {
+      width: 9.5em; height: 3.8em; border-radius: .8em;
+      background: var(--card-hi);
+      display: grid; place-items: center; color: #dde0e5;
+    }
+    .feat_ghost .ico { width: 2em; height: 2em; }
+    .feat p { font: 400 1.125em/1.25 var(--font-head); letter-spacing: -.02em; color: var(--ink-3); }
+    .feat p b { font-weight: 600; color: #525866; }
+
+    .show {
+      grid-column: 3; grid-row: 1 / span 2;
+      position: relative; overflow: hidden;
+      min-height: 24em;
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+    .show::before {
+      content: ""; position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,.35) 1px, transparent 1.2px);
+      background-size: 14px 14px;
+      -webkit-mask-image: linear-gradient(to bottom, #000, transparent 70%);
+              mask-image: linear-gradient(to bottom, #000, transparent 70%);
+    }
+    .browser {
+      position: absolute; left: 8%; right: 8%; top: 12%; bottom: -6%;
+      border-radius: 14px 14px 0 0;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.6) inset;
+      overflow: hidden;
+      transition: transform .6s cubic-bezier(.2,.8,.2,1);
+    }
+    .show:hover .browser { transform: translateY(-10px) scale(1.01); }
+    .browser_bar { display: flex; align-items: center; gap: .4em; height: 2.2em; padding: 0 .9em; border-bottom: 1px solid #eceef1; background: #fafbfc; }
+    .browser_bar i { width: .6em; height: .6em; border-radius: 50%; background: #dfe2e6; }
+    .browser_bar span { margin-left: .8em; flex: 1; max-width: 18em; height: 1.3em; border-radius: 6px; background: #eff1f4; font: .7em/1.85 var(--font-mono); color: var(--ink-3); padding: 0 .8em; overflow: hidden; white-space: nowrap; }
+    .browser img { width: 100%; height: calc(100% - 2.2em); object-fit: cover; object-position: top; }
+    .skel { padding: 1.4em; display: grid; gap: .8em; }
+    .skel div { border-radius: 8px; background: #eef0f3; }
+    .skel .h { height: 1.4em; width: 55%; background: linear-gradient(90deg, #e5e7eb, #f3f4f6); }
+    .skel .hero-b { height: 7em; background: var(--panel); opacity: .85; }
+    .skel .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8em; background: none; }
+    .skel .row div { height: 4.5em; }
+    .chip {
+      position: absolute; right: 6%; top: 6%;
+      display: flex; align-items: center; gap: .6em;
+      padding: .7em 1em;
+      border-radius: 14px;
+      background: rgba(255,255,255,.95);
+      box-shadow: 0 16px 30px -12px rgba(0,0,0,.35);
+      font-size: .8125em; color: var(--ink-2);
+      transform: rotate(6deg);
+    }
+    .chip b { display: block; color: var(--ink); font-size: 1.1em; }
+    .chip .feat_icon { width: 2.2em; height: 2.2em; }
+    .show_label { position: absolute; left: 0; right: 0; bottom: 1.2em; text-align: center; font: 600 1.4em var(--font-head); color: rgba(255,255,255,.9); letter-spacing: -.03em; z-index: 2; text-shadow: 0 2px 20px rgba(0,0,0,.25); }
+    @media (max-width: 991px) {
+      .proj_grid { grid-template-columns: 1fr 1fr; }
+      .show { grid-column: 1 / span 2; grid-row: 1; min-height: 20em; }
+    }
+    @media (max-width: 479px) { .feat { min-height: 9.5em; } .feat_ghost { width: 5em; } }
+
+    /* ---------- HOW IT WORKS (dark, Sui-style rail) ---------- */
+    .process { padding: 8em 0 0; }
+    .process_panel {
+      --grid-line: rgba(80, 140, 255, .1);
+      /* clip (not hidden) — hidden would create a scroll container and break the sticky cube */
+      position: relative; overflow: clip;
+      margin: 0 1em;
+      border-radius: 32px;
+      background: #000;
+      color: #fff;
+      padding: 7em 2.5em 6em;
+    }
+    .process_panel::before, .process_panel::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+    .process_panel::before {
+      background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 3em 3em; background-position: center top;
+      -webkit-mask-image: linear-gradient(to bottom, transparent, #000 10em, #000 calc(100% - 10em), transparent);
+              mask-image: linear-gradient(to bottom, transparent, #000 10em, #000 calc(100% - 10em), transparent);
+    }
+    .process_panel::after {
+      background: radial-gradient(50em 26em at 50% 8em, rgba(90,120,255,.22), transparent 70%),
+                  radial-gradient(24em 100em at 50% 60%, rgba(80,140,255,.07), transparent 70%);
+    }
+    .process_head { position: relative; z-index: 1; text-align: center; margin-bottom: 5em; }
+    .process_head .pill { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.14); color: #aab3c2; box-shadow: none; }
+    .process_head h2 { margin: .5em 0 .4em; font: 500 4.5em/1 var(--font-head); letter-spacing: -.05em; }
+    .process_head p { color: #8b93a3; max-width: 32em; margin: 0 auto; line-height: 1.5; }
+
+    .tl_main { position: relative; z-index: 1; display: flex; justify-content: center; gap: 3.5em; }
+    .tl_main.mobile { display: none; }
+    .tl_col { display: flex; flex-direction: column; gap: 6em; width: 100%; max-width: 27em; }
+    .tl_col.left { padding-top: 15em; }
+    .tl_col.right { padding-top: 2em; }
+    .tl_slot { height: 24.5em; }           /* reserves the open height → no layout jumps */
+
+    .tl_card {
+      position: relative; overflow: hidden;
+      background: #111317;
+      border-left: 1.5px solid #3a3f48; border-right: 1.5px solid #3a3f48;
+    }
+    .tl_row { position: relative; display: flex; align-items: center; gap: .75em; padding: 1em; border-top: 1.5px solid #3a3f48; border-bottom: 1.5px solid #3a3f48; }
+    .tl_row.bottom { padding-left: 4.2em; border-top: 0 solid transparent; }
+    .tl_num { flex: none; width: 2.5em; height: 2.5em; display: grid; place-items: center; border: 1.5px solid #3a3f48; color: #fff; }
+    .tl_num .ico { width: 1.2em; height: 1.2em; }
+    .tl_label { font: .875em/1.4 var(--font-mono); letter-spacing: -.02em; color: #fff; }
+    .tl_name { font-size: 1.05em; color: #8b93a3; }
+    .tl_name small { display: block; font-size: .8em; color: #5d6472; margin-top: .15em; }
+    .tl_cube_g { position: absolute; z-index: 1; left: 0; bottom: 0; width: .875em; height: .875em; margin-left: 1.8em; background: #111317; transform: translateY(50%); }
+    .tl_row.bottom .tl_cube_g { top: -.9em; bottom: auto; }
+    .tl_anim { position: relative; overflow: hidden; height: 15em; padding-left: 2.25em; display: flex; }
+    .tl_art { width: 100%; height: 15em; padding: 1em 1.2em; display: flex; align-items: center; }
+    .tl_art svg { width: 100%; height: 100%; }
+    .tl_conn { position: absolute; z-index: 2; inset: 0 auto 0 0; width: 1.4em; margin-left: 2.2em; padding: 3.5em 0 2.25em; }
+    .tl_conn i { display: block; }
+    .tl_conn .v { width: 1.5px; height: 100%; background: #3a3f48; }
+    .tl_conn .h { width: 100%; height: 1.5px; background: #3a3f48; }
+
+    .tl_rail { position: relative; width: 2px; display: flex; flex-direction: column; align-items: center; }
+    .tl_current { position: sticky; top: calc(50% - 7.8em); z-index: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 2px; height: 15.6em; }
+    .tl_current::before, .tl_current::after { content: ""; position: absolute; left: 0; right: 0; height: 12%; z-index: 3; }
+    .tl_current::before { top: 0; background: linear-gradient(#000, transparent); }
+    .tl_current::after { bottom: 0; background: linear-gradient(transparent, #000); }
+    .tl_trail { width: 100%; height: 0%; background: linear-gradient(var(--violet-1), #4ea3ff); }
+    .tl_cube { width: .75em; height: .75em; min-height: .75em; background: #fff; box-shadow: 0 0 14px rgba(140,160,255,.9); }
+    .tl_dots { position: absolute; inset: 0; color: #fff; }
+    .tl_dots svg { width: 100%; height: 100%; display: block; }
+
+    @media (max-width: 767px) {
+      .process_panel { margin: 0 8px; padding: 4.5em 16px 3em; border-radius: 24px; }
+      .process_head h2 { font-size: 2.6em; }
+      .tl_main { display: none; }
+      .tl_main.mobile { display: block; }
+      .tl_main.mobile .tl_col { max-width: none; padding-top: 0; gap: 1.2em; }
+      .tl_slot { height: auto; }
+      .tl_row.bottom { border-top: 1.5px solid #3a3f48; }
+      .tl_anim, .tl_art { height: 12em; }
+    }
+
+    /* ---------- about ---------- */
+    .about_grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: .9em; }
+    .about_photo {
+      grid-row: span 3; position: relative; overflow: hidden;
+      min-height: 26em; border-radius: var(--radius);
+      background: linear-gradient(140deg, #c7bfff, #7566ff 45%, #36c9f0);
+      box-shadow: var(--shadow);
+    }
+    .about_photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .about_photo .initials { position: absolute; inset: 0; display: grid; place-items: center; font: 600 9em var(--font-head); letter-spacing: -.06em; color: rgba(255,255,255,.9); }
+    .about_photo .card {
+      position: absolute; left: 1.2em; right: 1.2em; bottom: 1.2em;
+      padding: 1.1em 1.3em; border-radius: 16px;
+      background: rgba(255,255,255,.88); backdrop-filter: blur(10px);
+      display: flex; justify-content: space-between; align-items: center; gap: 1em;
+    }
+    .about_photo .card b { font: 600 1.15em var(--font-head); display: block; }
+    .about_photo .card span { font-size: .85em; color: var(--ink-2); }
+    .stat .num { font: 500 2.8em/1 var(--font-head); letter-spacing: -.05em; color: var(--ink); }
+    .about_bio { grid-column: 2 / span 2; padding: 1.6em; border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); color: var(--ink-2); line-height: 1.65; font-size: 1.02em; }
+    .about_bio p + p { margin-top: .9em; }
+    .about_bio b { color: var(--ink); font-weight: 600; }
+    @media (max-width: 767px) {
+      .about_grid { grid-template-columns: 1fr 1fr; }
+      .about_photo { grid-column: 1 / span 2; grid-row: auto; min-height: 22em; }
+      .about_bio { grid-column: 1 / span 2; }
+    }
+
+    .about_photo img { object-position: center 18%; }
+
+    /* ---------- about v2 — particle portrait + orbiting cards ---------- */
+    .orbit { padding: 8em 0 0; }
+    .orbit_stage {
+      position: relative; overflow: hidden;
+      height: 100svh; margin: 0; border-radius: 0;
+      background:
+        radial-gradient(60% 70% at 72% 45%, rgba(33, 86, 214, .28), transparent 70%),
+        radial-gradient(50% 60% at 20% 80%, rgba(23, 63, 168, .25), transparent 70%),
+        #051126;
+      color: #fff;
+    }
+    .orbit_stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .orbit_stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 100% at 50% 50%, transparent 55%, rgba(2, 8, 20, .7)); }
+    .orbit_ring { position: absolute; inset: 0; perspective: 1000px; perspective-origin: 36% calc(50% + 30px); z-index: 2; pointer-events: none; }
+    .orbit_spin { position: absolute; left: 36%; top: calc(50% + 30px); width: 0; height: 0; transform-style: preserve-3d; }
+    .orbit_card {
+      position: absolute; left: calc(var(--cw) / -2); top: 0; width: var(--cw);
+      transform: translateY(-50%) rotateY(var(--a)) translateZ(calc(var(--r) * -1));
+      backface-visibility: hidden;
+      padding: 1.8em 1.9em 2em;
+      border-radius: 20px;
+      background: linear-gradient(160deg, rgba(95, 176, 255, .16), rgba(23, 63, 168, .1) 60%, rgba(5, 17, 38, .35));
+      border: 1px solid rgba(143, 202, 255, .28);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 30px 60px -20px rgba(0, 10, 40, .8);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      pointer-events: auto;
+    }
+    .orbit_card .k { display: flex; justify-content: space-between; font: 500 .75em var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: #8fcaff; }
+    .orbit_card h3 { margin: 1.6em 0 .55em; font: 500 2em/1.05 var(--font-head); letter-spacing: -.035em; }
+    .orbit_card p { font-size: .98em; line-height: 1.6; color: rgba(222, 234, 255, .72); }
+    .orbit_card.intro h3 { font-size: 2.9em; }
+    .orbit_card .chips { display: flex; flex-wrap: wrap; gap: .45em; margin-top: 1.4em; }
+    .orbit_card .chips span { padding: .4em .75em; border-radius: 99px; font-size: .78em; background: rgba(143, 202, 255, .12); border: 1px solid rgba(143, 202, 255, .25); color: #dceaff; }
+    .orbit_hud { position: absolute; left: 0; right: 0; z-index: 3; display: flex; justify-content: space-between; align-items: center; gap: 1.5em; padding: 1.6em 2em; font: 500 .75em var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: rgba(191, 228, 255, .7); pointer-events: none; }
+    .orbit_hud.top { top: 0; padding-top: 100px; }   /* sits below the fixed nav */
+    .orbit_hud.bottom { bottom: 0; }
+    .orbit_progress { flex: 1; max-width: 22em; height: 1px; background: rgba(143, 202, 255, .2); }
+    .orbit_progress i { display: block; height: 100%; width: 100%; background: #8fcaff; transform-origin: left; transform: scaleX(0); box-shadow: 0 0 10px #5fb0ff; }
+    @media (max-width: 767px) {
+      .orbit { padding-top: 5em; }
+      .orbit_ring { perspective-origin: 50% 58%; }
+      .orbit_spin { left: 50%; top: 58%; }
+      .orbit_card { padding: 1.4em 1.4em 1.6em; }
+      .orbit_card h3 { font-size: 1.6em; } .orbit_card.intro h3 { font-size: 2.2em; }
+      .orbit_hud { padding: 1.2em 1.1em; font-size: .68em; }
+      .orbit_hud.top { padding-top: 84px; }
+      .orbit_hud .hide-m { display: none; }
+    }
+
+    /* ---------- experience — same orbit stage, 3 parts ---------- */
+    .orbit.xp .orbit_card { min-height: 21em; display: flex; flex-direction: column; }
+    .orbit_card .role { margin-top: -.1em; font: 500 1.08em var(--font-head); color: #dceaff; }
+    .orbit_card .meta { display: flex; flex-wrap: wrap; gap: .45em; margin: 1.1em 0 1.1em; }
+    .orbit_card .meta span { display: inline-flex; align-items: center; gap: .45em; padding: .4em .75em; border-radius: 99px; font: 500 .74em var(--font-mono); letter-spacing: .04em; background: rgba(143, 202, 255, .1); border: 1px solid rgba(143, 202, 255, .22); color: #cfe3ff; }
+    .orbit_card .meta .now { color: #b9f6c9; border-color: rgba(74, 222, 128, .35); background: rgba(74, 222, 128, .1); }
+    .orbit_card .meta .now::before { content: ""; width: .5em; height: .5em; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+    .orbit_card .sk + .sk { margin-top: .85em; }
+    .orbit_card .sk div { display: flex; justify-content: space-between; font-size: .95em; color: #eaf3ff; }
+    .orbit_card .sk em { font: 500 .72em var(--font-mono); font-style: normal; letter-spacing: .06em; text-transform: uppercase; color: #8fcaff; }
+    .orbit_card .sk b { display: block; height: .32em; margin-top: .45em; border-radius: 99px; background: rgba(143, 202, 255, .12); overflow: hidden; }
+    .orbit_card .sk b i { display: block; height: 100%; width: var(--w); border-radius: inherit; background: linear-gradient(90deg, #2b6ef2, #8fcaff); box-shadow: 0 0 10px rgba(95, 176, 255, .6); }
+    .orbit_card .year { margin-top: auto; padding-top: 1.2em; font: 500 3.6em/1 var(--font-head); letter-spacing: -.05em; color: rgba(191, 228, 255, .9); }
+    .orbit_parts { display: flex; gap: .4em; pointer-events: none; }
+    .orbit_parts span { padding: .45em .8em; border-radius: 99px; border: 1px solid transparent; transition: color .4s, border-color .4s, background .4s; }
+    .orbit_parts span.on { color: #fff; border-color: rgba(143, 202, 255, .35); background: rgba(143, 202, 255, .1); }
+    .orbit_hud a { pointer-events: auto; color: #bfe4ff; border-bottom: 1px solid rgba(191, 228, 255, .35); }
+    .orbit_hud a:hover { color: #fff; }
+    /* language list inside the old About stat card */
+    .stat_list { display: flex; flex-wrap: wrap; gap: .35em; margin-top: .7em; }
+    .stat_list span { padding: .3em .65em; border-radius: 99px; background: #fff; border: 1px solid var(--line); font-size: .78em; color: var(--ink); }
+    @media (max-width: 767px) { .orbit_parts span { padding: .4em .55em; } .orbit.xp .orbit_card { min-height: 0; } }
+
+    /* ---------- tools marquee ---------- */
+    .tools { padding: 8em 0 0; text-align: center; }
+    .tools h3 { font: 500 1.6em var(--font-head); letter-spacing: -.03em; margin: .8em 0 2em; }
+    .marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent); mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent); }
+    .marquee_track { display: flex; gap: .9em; width: max-content; padding: .6em 0; }
+    .tool { display: flex; align-items: center; gap: .6em; padding: .8em 1.2em; border-radius: 14px; background: #fff; border: 1px solid var(--line); box-shadow: 0 6px 16px -10px rgba(0,0,0,.2); font-weight: 500; white-space: nowrap; }
+    .tool i { width: 1.6em; height: 1.6em; border-radius: .45em; display: grid; place-items: center; color: #fff; font: 600 .75em var(--font-mono); font-style: normal; }
+
+    /* ---------- FAQ ---------- */
+    .faq_list { max-width: 50em; margin: 0 auto; display: grid; gap: .7em; }
+    .faq_item { border-radius: 18px; background: var(--card); box-shadow: var(--shadow); overflow: hidden; }
+    .faq_q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 1em; padding: 1.25em 1.4em; background: none; border: 0; cursor: pointer; font: 500 1.05em var(--font-head); color: var(--ink); text-align: left; letter-spacing: -.01em; }
+    .faq_q i { flex: none; width: 1.8em; height: 1.8em; border-radius: 50%; background: #fff; display: grid; place-items: center; transition: transform .35s, background .35s, color .35s; font-style: normal; color: var(--ink-2); }
+    .faq_item.open .faq_q i { transform: rotate(45deg); background: var(--ink); color: #fff; }
+    .faq_a { height: 0; overflow: hidden; }
+    .faq_a p { padding: 0 1.4em 1.3em; color: var(--ink-2); line-height: 1.6; }
+    .faq .block_head { text-align: center; grid-template-columns: 1fr; justify-items: center; }
+
+    /* ---------- contact / footer ---------- */
+    .contact { padding: 8em 0 2em; }
+    .contact_panel {
+      position: relative; overflow: hidden;
+      padding: 5em 2em; border-radius: 32px; text-align: center; color: #fff;
+      background: linear-gradient(140deg, #7566ff 0%, #3a28d6 50%, #0ea5e9 100%);
+      box-shadow: 0 40px 80px -30px rgba(70,50,230,.6);
+    }
+    .contact_panel::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.25) 1px, transparent 1.2px); background-size: 16px 16px; -webkit-mask-image: radial-gradient(closest-side, #000, transparent); mask-image: radial-gradient(closest-side, #000, transparent); }
+    .contact_panel > * { position: relative; }
+    .contact_panel h2 { font: 500 4.2em/1 var(--font-head); letter-spacing: -.05em; margin: .4em 0 .35em; }
+    .contact_panel p { opacity: .85; max-width: 30em; margin: 0 auto 2em; line-height: 1.5; }
+    .contact_panel .pill { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.3); color: #fff; box-shadow: none; }
+    .contact_panel .btn { background: #fff; color: var(--ink); }
+    .socials { display: flex; gap: .6em; justify-content: center; margin-top: 2em; flex-wrap: wrap; }
+    .socials a { padding: .55em 1em; border-radius: 99px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.25); font-size: .875em; transition: background .25s; }
+    .socials a:hover { background: rgba(255,255,255,.28); }
+    .footer { display: flex; justify-content: space-between; align-items: center; gap: 1em; flex-wrap: wrap; padding: 2em 0 2.5em; color: var(--ink-3); font-size: .875em; }
+    .footer nav { display: flex; gap: 1.5em; }
+    .footer a:hover { color: var(--ink); }
+    @media (max-width: 767px) { .contact_panel h2 { font-size: 2.6em; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav">
+    <a href="#top" class="nav_logo"><i></i><span data-bind="brand"></span></a>
+    <nav class="nav_links">
+      <a href="#work">Work</a><a href="#process">How it works</a><a href="#about">About</a><a href="#experience">Experience</a><a href="#faq">FAQ</a>
+    </nav>
+    <a href="#contact" class="btn violet">Hire me</a>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <span class="pill hero_in"><span class="dot"></span><span data-bind="availability"></span></span>
+        <h1 class="hero_in" data-bind="headline"></h1>
+        <p class="sub hero_in" data-bind="intro"></p>
+        <div class="hero_actions hero_in">
+          <a href="#work" class="btn violet">See my work <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a href="#contact" class="btn ghost">Get in touch</a>
+        </div>
+      </div>
+      <div class="iso">
+        <div class="hero_glow"></div>
+        <div class="iso_plane" id="isoPlane">
+          <div class="iso_grid"></div>
+          <svg class="iso_lines" id="isoLines" viewBox="0 0 896 896"></svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK -->
+    <div id="work"></div>
+
+    <!-- HOW IT WORKS -->
+    <section class="process" id="process">
+      <div class="process_panel">
+        <div class="process_head">
+          <span class="pill">[ → ] How it works</span>
+          <h2 class="scr-head">From idea to launch</h2>
+          <p>A clear, six-step process — so you always know what's happening and what comes next.</p>
+        </div>
+        <div class="tl_main" id="tlDesktop">
+          <div class="tl_col left" data-steps="2,4,6"></div>
+          <div class="tl_rail">
+            <div class="tl_current"><div class="tl_trail top"></div><div class="tl_cube"></div><div class="tl_trail bottom"></div></div>
+            <div class="tl_dots"><svg viewBox="0 0 2 100" preserveAspectRatio="none"><path d="M1 0V100" stroke="currentColor" stroke-width="2" stroke-dasharray="2 10" vector-effect="non-scaling-stroke"/></svg></div>
+          </div>
+          <div class="tl_col right" data-steps="1,3,5"></div>
+        </div>
+        <div class="tl_main mobile"><div class="tl_col" data-steps="1,2,3,4,5,6"></div></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="block" id="about">
+      <div class="container">
+        <div class="block_head reveal">
+          <div><span class="pill">About me</span><h2 data-bind="aboutTitle"></h2></div>
+          <div><p data-bind="aboutLead"></p><a href="#contact" class="btn">Let's work together</a></div>
+        </div>
+        <div class="about_grid reveal" id="aboutGrid"></div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE — same orbit design: work → skills → education -->
+    <section class="orbit xp" id="experience">
+      <div class="orbit_stage">
+        <canvas class="orbit_flow"></canvas>
+        <canvas class="orbit_portrait"></canvas>
+        <div class="orbit_hud top">
+          <span>[ Experience ]</span>
+          <div class="orbit_parts"><span class="on">01 Work</span><span>02 Skills</span><span>03 Education</span></div>
+          <a class="hide-m" href="cv-resume.pdf" download="Mehedi-Hasan-CV.pdf">Download Resume ↓</a>
+        </div>
+        <div class="orbit_ring"><div class="orbit_spin"></div></div>
+        <div class="orbit_hud bottom"><span class="orbit_count">01 / 01</span><div class="orbit_progress"><i class="orbit_bar"></i></div><span class="hide-m">Scroll to explore</span></div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section class="tools">
+      <div class="container"><span class="pill">Toolkit</span><h3>Tools I use every day</h3></div>
+      <div class="marquee"><div class="marquee_track" id="toolTrack"></div></div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="block faq" id="faq">
+      <div class="container">
+        <div class="block_head reveal"><div><span class="pill">FAQ</span><h2>Questions, answered</h2></div></div>
+        <div class="faq_list" id="faqList"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="contact_panel reveal">
+          <span class="pill"><span class="dot"></span><span data-bind="availability"></span></span>
+          <h2>Let's build something.</h2>
+          <p data-bind="contactText"></p>
+          <a class="btn" id="mailBtn">Send an email <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <div class="socials" id="socials"></div>
+        </div>
+        <footer class="footer">
+          <span>© <span id="year"></span> <span data-bind="name"></span>. All rights reserved.</span>
+          <nav><a href="#work">Work</a><a href="#process">Process</a><a href="#about">About</a><a href="#top">Back to top ↑</a></nav>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.3.23/dist/lenis.min.js"></script>
+  <script>
+  /* =====================================================================
+     ✏️  EDIT EVERYTHING HERE — your info, projects, process, FAQ
+     ===================================================================== */
+  const SITE = {
+    name: "Mehedi Hasan",
+    brand: "mehedi",
+    initials: "MH",
+    role: "WordPress & Web Developer",
+    availability: "Available for new projects",
+    headline: "WordPress Websites That Look Great & Load Fast",
+    intro: "Hi, I'm Mehedi Hasan — a WordPress, Elementor & WooCommerce expert. 300+ websites delivered for clients around the world.",
+    email: "mehedisohag54@gmail.com",
+    phone: "+8801640-455954",
+    photo: "images/mehedi.png",
+    location: "Mirpur 1, Dhaka, Bangladesh",
+    aboutTitle: "WordPress expert with 300+ websites delivered",
+    aboutLead: "From custom WordPress builds to WooCommerce stores, Squarespace sites and React front-ends — I deliver fast, responsive, SEO-ready websites on tight deadlines.",
+    bio: [
+      "Hello! I'm <b>Mehedi Hasan</b>, a <b>WordPress, Elementor, WooCommerce & Squarespace expert</b> with <b>6+ years</b> of experience in both online and offline marketplaces. Since 2020 I've completed <b>300+ website projects</b>.",
+      "I've built custom websites, landing pages and e-commerce platforms for a wide range of industries — always mobile-friendly and SEO-optimized. I work closely with clients to understand their business goals, and I approach every project with passion and commitment.",
+      "I'm a dedicated freelancer on <b>Upwork</b> and have worked with teams in the <b>United States</b> and <b>South Korea</b>. I also hold a <b>Diploma in Graphic Design Technology</b>, which helps me care about design as much as code.",
+    ],
+    stats: [
+      { num: "6+", label: "Years experience" },
+      { num: "300+", label: "Websites completed" },
+      { num: "5", label: "Companies worked with" },
+      { num: "4", label: "Languages spoken", list: ["English", "Bengali", "Hindi", "Urdu"] },
+    ],
+    contactText: "Have a project in mind? Send me the details — WordPress, WooCommerce, Squarespace or a custom build. I usually reply within 24 hours.",
+    socials: [
+      { label: "Behance", url: "https://www.behance.net/mehedisohag" },
+      { label: "Call / WhatsApp", url: "tel:+8801640455954" },
+    ],
+
+    /* Work experience — newest first */
+    experience: [
+      { company: "Plurasuite", role: "Web Developer", place: "United States", period: "Feb 2026 — Present" },
+      { company: "Mawa Media", role: "WordPress Expert", place: "United States", period: "May 2024 — Dec 2025" },
+      { company: "PanamaSoft", role: "Jr. WordPress Expert", place: "South Korea", period: "Feb 2023 — Mar 2024" },
+      { company: "Upwork", role: "WordPress Developer", place: "Freelance · USA clients", period: "Nov 2021 — Present" },
+      { company: "Boddi Bari", role: "WordPress Expert", place: "Mirpur, Dhaka, Bangladesh", period: "Mar 2022 — Nov 2022" },
+    ],
+
+    /* Skills — one card per group, level shown as a bar */
+    skills: [
+      { group: "Platforms & CMS", name: "WordPress", level: "Expert" },
+      { group: "Platforms & CMS", name: "Elementor", level: "Expert" },
+      { group: "Platforms & CMS", name: "WooCommerce", level: "Expert" },
+      { group: "Platforms & CMS", name: "Squarespace", level: "Expert" },
+      { group: "Code", name: "HTML5", level: "Expert" },
+      { group: "Code", name: "CSS3", level: "Expert" },
+      { group: "Code", name: "JavaScript", level: "Expert" },
+      { group: "Code", name: "React.js", level: "Expert" },
+      { group: "Code", name: "PHP", level: "Expert" },
+      { group: "Design", name: "Adobe Illustrator", level: "Expert" },
+      { group: "Design", name: "Adobe Photoshop", level: "Intermediate" },
+    ],
+
+    education: [
+      { title: "Diploma in Engineering", place: "Government Graphic Arts Institute · Graphic Design Technology", year: "2024" },
+      { title: "Secondary School Certificate", place: "Brahmanbaria Govt. Technical School & College · General Electrical Works", year: "2019" },
+    ],
+
+    /* Your templates & sites. image = screenshot path/URL (optional) */
+    projects: [
+      {
+        tag: "WordPress theme", title: "Nova — custom WordPress business theme",
+        text: "A lightweight custom WordPress theme with scroll animations, reusable blocks and a fully responsive layout.",
+        url: "#", cta: "View live site", image: "", theme: "blue", chip: "Template",
+        features: [
+          { icon: "bolt", b: "95+", t: "Lighthouse score" },
+          { icon: "layout", b: "12", t: "Ready sections" },
+          { icon: "phone", b: "Fully", t: "Responsive" },
+          { icon: "star", b: "GSAP", t: "Animations" },
+        ],
+      },
+      {
+        tag: "Elementor template", title: "Folio — Elementor portfolio template",
+        text: "A clean, ready-to-import Elementor template for creatives with case-study pages, smooth transitions and dark mode.",
+        url: "#", cta: "Preview template", image: "", theme: "green", chip: "Portfolio",
+        features: [
+          { icon: "palette", b: "Dark", t: "& light mode" },
+          { icon: "layout", b: "Case-study", t: "pages" },
+          { icon: "bolt", b: "Smooth", t: "transitions" },
+          { icon: "code", b: "Clean", t: "semantic code" },
+        ],
+      },
+      {
+        tag: "WooCommerce store", title: "Brew & Co — coffee shop WooCommerce store",
+        text: "An online store for a local café built with WooCommerce: product catalog, cart, payments and a story-driven homepage.",
+        url: "#", cta: "Visit website", image: "", theme: "purple", chip: "E-commerce",
+        features: [
+          { icon: "cart", b: "Online", t: "ordering" },
+          { icon: "chart", b: "+60%", t: "More orders" },
+          { icon: "globe", b: "SEO", t: "optimized" },
+          { icon: "phone", b: "Mobile", t: "first" },
+        ],
+      },
+      {
+        tag: "Dashboard UI", title: "Pulse — analytics dashboard template",
+        text: "A dashboard UI kit with charts, tables and reusable components, built for speed and easy customization.",
+        url: "#", cta: "See the demo", image: "", theme: "orange", chip: "UI Kit",
+        features: [
+          { icon: "chart", b: "20+", t: "Chart widgets" },
+          { icon: "layout", b: "Reusable", t: "components" },
+          { icon: "palette", b: "Easy", t: "theming" },
+          { icon: "code", b: "Documented", t: "code" },
+        ],
+      },
+    ],
+
+    /* How it works — 6 steps */
+    process: [
+      { label: "Discovery & goals", name: "Discovery", sub: "Call · brief · research", icon: "search", art: "discover" },
+      { label: "Wireframes & visual design", name: "Design", sub: "Figma · style guide", icon: "palette", art: "design" },
+      { label: "Clean, responsive build", name: "Development", sub: "WordPress · Elementor · React", icon: "code", art: "develop" },
+      { label: "Motion & interactions", name: "Animation", sub: "GSAP · micro-interactions", icon: "star", art: "motion" },
+      { label: "Testing on every device", name: "Testing", sub: "Speed · browsers · a11y", icon: "phone", art: "test" },
+      { label: "Launch & ongoing support", name: "Launch", sub: "Deploy · handoff · care", icon: "bolt", art: "launch" },
+    ],
+
+    tools: [
+      ["WordPress", "#21759b"], ["WooCommerce", "#7f54b3"], ["Elementor", "#92003b"], ["Squarespace", "#111111"], ["HTML", "#e34f26"],
+      ["CSS", "#2965f1"], ["JavaScript", "#e2b300"], ["React.js", "#149eca"], ["PHP", "#777bb4"], ["GSAP", "#0ae448"],
+      ["Illustrator", "#ff9a00"], ["Photoshop", "#31a8ff"], ["Figma", "#a259ff"],
+    ],
+
+    faq: [
+      { q: "What kind of projects do you take on?", a: "Custom WordPress websites, WooCommerce stores, Elementor builds, Squarespace sites, React front-ends, landing pages and templates — plus fixes, speed optimization and redesigns." },
+      { q: "Do you work with international clients?", a: "Yes — I've worked with companies in the United States and South Korea and with clients worldwide on Upwork. I communicate in English, Bengali, Hindi and Urdu." },
+      { q: "How long does a website take?", a: "A landing page usually takes 1–2 weeks; a full WordPress or WooCommerce site 2–4 weeks, depending on content and feedback speed." },
+      { q: "Can I edit the website myself afterwards?", a: "Yes. Everything is built so you can update text, images, products and pages from the WordPress dashboard — and I'll show you how." },
+      { q: "Do you sell your templates?", a: "Yes — several of the templates above are available. Reach out and I'll send you the links and licensing details." },
+      { q: "How do we get started?", a: "Send me an email with a short description of your project. We'll schedule a quick call and I'll send a proposal." },
+    ],
+  };
+  </script>
+
+  <script>
+  (() => {
+    gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const $ = (s, el = document) => el.querySelector(s);
+    const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+
+    /* ---------------- icons ---------------- */
+    const P = {
+      bolt: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+      layout: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/>',
+      phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+      code: '<path d="M8 6l-6 6 6 6M16 6l6 6-6 6"/>',
+      star: '<path d="M12 2l3 7 7 .5-5.5 4.5 2 7-6.5-4-6.5 4 2-7L2 9.5 9 9z"/>',
+      chart: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+      globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2c3 3 3 17 0 20M12 2c-3 3-3 17 0 20"/>',
+      palette: '<path d="M12 3a9 9 0 100 18c1 0 1.5-.8 1.5-1.5 0-1-.8-1.2-.8-2 0-.8.7-1.5 1.5-1.5H17a4 4 0 004-4c0-5-4-9-9-9z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/>',
+      cart: '<path d="M3 4h2l2 12h11l2-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/>',
+      search: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/>',
+      check: '<path d="M5 12l5 5 9-10"/>',
+      arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+    };
+    const icon = (n) => `<svg class="ico" viewBox="0 0 24 24">${P[n] || P.star}</svg>`;
+
+    const THEMES = {
+      blue:   { g: "linear-gradient(160deg,#5ec8ff,#1f8bff)", glow: "rgba(31,139,255,.55)", panel: "linear-gradient(150deg,#b9ecff 0%,#4fb3ff 45%,#1f6bff 100%)" },
+      green:  { g: "linear-gradient(160deg,#8ef06a,#2fb84a)", glow: "rgba(47,184,74,.5)",   panel: "linear-gradient(150deg,#e6ffd6 0%,#7ee36a 40%,#1f6f5c 85%,#233a7a 100%)" },
+      purple: { g: "linear-gradient(160deg,#9b8bff,#5b3df5)", glow: "rgba(91,61,245,.5)",   panel: "linear-gradient(150deg,#d9d2ff 0%,#8f78ff 40%,#6d5cff 60%,#4fc3f7 100%)" },
+      orange: { g: "linear-gradient(160deg,#ffa36b,#ff5a3c)", glow: "rgba(255,90,60,.5)",   panel: "linear-gradient(150deg,#ffe0c9 0%,#ff9a5c 40%,#ff5a3c 100%)" },
+    };
+
+    /* ---------------- bind simple text ---------------- */
+    $$("[data-bind]").forEach(el => { const v = SITE[el.dataset.bind]; if (v != null) el.textContent = v; });
+    document.title = `${SITE.name} — ${SITE.role}`;
+    $("#year").textContent = new Date().getFullYear();
+    $("#mailBtn").href = `mailto:${SITE.email}`;
+    $("#socials").innerHTML = SITE.socials.map(s => `<a href="${s.url}" target="_blank" rel="noopener">${s.label} ↗</a>`).join("");
+
+    /* ---------------- hero isometric ---------------- */
+    (function buildIso() {
+      const plane = $("#isoPlane"), svg = $("#isoLines");
+      const U = 896 / 56; // px per em on the plane's viewBox
+      const center = { x: 28, y: 28, s: 11 };
+      const tiles = [
+        { x: 10, y: 14, icon: "code" }, { x: 12, y: 30, icon: "palette" }, { x: 16, y: 44, icon: "layout" },
+        { x: 40, y: 10, icon: "bolt" }, { x: 44, y: 26, icon: "phone" }, { x: 40, y: 42, icon: "star" },
+      ];
+      let html = `<div class="tile core" style="left:${center.x - center.s / 2}em;top:${center.y - center.s / 2}em"><span>${SITE.initials}</span></div>`;
+      let paths = "";
+      tiles.forEach((t, i) => {
+        html += `<div class="tile" style="left:${t.x - 3}em;top:${t.y - 3}em">${icon(t.icon)}</div>`;
+        const midX = (t.x + center.x) / 2;
+        const d = `M${t.x * U} ${t.y * U} H${midX * U} V${center.y * U + (i % 3 - 1) * 40} H${center.x * U}`;
+        paths += `<path class="base" d="${d}"/><path class="flow" d="${d}"/>`;
+      });
+      svg.innerHTML = paths;
+      plane.insertAdjacentHTML("beforeend", html);
+    })();
+
+    /* ---------------- projects ---------------- */
+    $("#work").innerHTML = SITE.projects.map((p, i) => {
+      const th = THEMES[p.theme] || THEMES.blue;
+      const vars = `--g:${th.g};--glow:${th.glow};--panel:${th.panel}`;
+      const host = (p.url && p.url !== "#") ? p.url.replace(/^https?:\/\//, "").replace(/\/$/, "") : `${p.title.split(" ")[0].toLowerCase()}.site`;
+      return `
+      <section class="block project" style="${vars}">
+        <div class="container">
+          <div class="block_head reveal">
+            <div><span class="pill">${p.tag}</span><h2>${p.title}</h2></div>
+            <div><p>${p.text}</p><a class="btn" href="${p.url}" target="_blank" rel="noopener">${p.cta} ${icon("arrow")}</a></div>
+          </div>
+          <div class="proj_grid">
+            ${p.features.map(f => `
+              <div class="feat reveal">
+                <div class="feat_top"><div class="feat_icon">${icon(f.icon)}</div><div class="feat_ghost">${icon(f.icon)}</div></div>
+                <p><b>${f.b}</b> ${f.t}</p>
+              </div>`).join("")}
+            <a class="show reveal" href="${p.url}" target="_blank" rel="noopener">
+              <div class="browser">
+                <div class="browser_bar"><i></i><i></i><i></i><span>${host}</span></div>
+                ${p.image ? `<img src="${p.image}" alt="${p.title} screenshot" loading="lazy">`
+                          : `<div class="skel"><div class="h"></div><div class="hero-b"></div><div class="row"><div></div><div></div><div></div></div></div>`}
+              </div>
+              <div class="chip"><div class="feat_icon">${icon(p.features[0].icon)}</div><div><b>${p.chip}</b>Project ${String(i + 1).padStart(2, "0")}</div></div>
+            </a>
+          </div>
+        </div>
+      </section>`;
+    }).join("");
+
+    /* ---------------- about ---------------- */
+    $("#aboutGrid").innerHTML = `
+      <div class="about_photo">
+        ${SITE.photo ? `<img src="${SITE.photo}" alt="${SITE.name}">` : `<div class="initials">${SITE.initials}</div>`}
+        <div class="card"><div><b>${SITE.name}</b><span>${SITE.role}</span></div><span>📍 ${SITE.location}</span></div>
+      </div>
+      ${SITE.stats.slice(0, 2).map(s => `<div class="feat stat" style="--g:${THEMES.purple.g};--glow:${THEMES.purple.glow}"><div class="num" data-count="${s.num}">${s.num}</div><p>${s.label}</p></div>`).join("")}
+      <div class="about_bio">${SITE.bio.map(b => `<p>${b}</p>`).join("")}</div>`;
+    // extra stats under bio on wide screens
+    $("#aboutGrid").insertAdjacentHTML("beforeend", SITE.stats.slice(2).map(s => `<div class="feat stat"><div class="num" data-count="${s.num}">${s.num}</div>
+      <div><p>${s.label}</p>${s.list ? `<div class="stat_list">${s.list.map(l => `<span>${l}</span>`).join("")}</div>` : ""}</div></div>`).join(""));
+
+    /* ---------------- tools marquee ---------------- */
+    const toolHTML = SITE.tools.map(([n, c]) => `<div class="tool"><i style="background:${c}">${n.slice(0, 2)}</i>${n}</div>`).join("");
+    $("#toolTrack").innerHTML = toolHTML + toolHTML;
+
+    /* ---------------- FAQ ---------------- */
+    $("#faqList").innerHTML = SITE.faq.map(f => `
+      <div class="faq_item reveal">
+        <button class="faq_q" aria-expanded="false">${f.q}<i>+</i></button>
+        <div class="faq_a"><p>${f.a}</p></div>
+      </div>`).join("");
+    $$(".faq_item").forEach(item => {
+      const btn = $(".faq_q", item), body = $(".faq_a", item);
+      btn.addEventListener("click", () => {
+        const open = !item.classList.contains("open");
+        $$(".faq_item.open").forEach(o => { if (o !== item) { o.classList.remove("open"); $(".faq_q", o).setAttribute("aria-expanded", "false"); gsap.to($(".faq_a", o), { height: 0, duration: .4 }); } });
+        item.classList.toggle("open", open);
+        btn.setAttribute("aria-expanded", open);
+        gsap.to(body, { height: open ? "auto" : 0, duration: .45, ease: "power3.out", onComplete: () => ScrollTrigger.refresh() });
+      });
+    });
+
+    /* =====================================================================
+       HOW IT WORKS — cards + step illustrations
+       ===================================================================== */
+    const C = { G: "#3a3f48", B: "#6d7cff", C2: "#4ea3ff", W: "#fff" };
+    const ART = {
+      discover: {
+        svg: () => {
+          let s = "";
+          for (let r = 0; r < 3; r++) for (let c = 0; c < 4; c++)
+            s += `<rect class="note" x="${40 + c * 62}" y="${30 + r * 46}" width="50" height="34" rx="3" fill="none" stroke="${C.G}" stroke-width="1.5"/>`;
+          return s + `<g class="lens"><circle cx="0" cy="0" r="22" fill="rgba(109,124,255,.12)" stroke="${C.W}" stroke-width="3"/><path d="M16 16l18 18" stroke="${C.W}" stroke-width="4" stroke-linecap="round"/></g>`;
+        },
+        run(svg) {
+          const notes = $$(".note", svg), lens = $(".lens", svg);
+          const pts = [[3, 0], [6, 1], [9, 2], [4, 1]];
+          const tl = gsap.timeline({ repeat: -1 });
+          gsap.set(lens, { x: 60, y: 50 });
+          pts.forEach(([n]) => {
+            const r = notes[n], x = +r.getAttribute("x") + 25, y = +r.getAttribute("y") + 17;
+            tl.to(lens, { x, y, duration: .8, ease: "power2.inOut" })
+              .to(r, { fill: C.B, stroke: C.B, duration: .2 })
+              .to({}, { duration: .3 });
+          });
+          tl.to(notes, { fill: "rgba(0,0,0,0)", stroke: C.G, duration: .4 });
+          return tl;
+        }
+      },
+      design: {
+        svg: () => `
+          <rect x="40" y="20" width="240" height="140" rx="6" fill="none" stroke="${C.G}" stroke-width="1.5"/>
+          <rect class="p" x="52" y="32" width="216" height="14" rx="3" fill="${C.G}"/>
+          <rect class="p" x="52" y="56" width="130" height="10" rx="3" fill="${C.W}"/>
+          <rect class="p" x="52" y="72" width="90" height="8" rx="3" fill="${C.G}"/>
+          <rect class="p hero" x="192" y="56" width="76" height="40" rx="4" fill="${C.B}"/>
+          <rect class="p" x="52" y="106" width="66" height="42" rx="4" fill="${C.G}"/>
+          <rect class="p" x="127" y="106" width="66" height="42" rx="4" fill="${C.G}"/>
+          <rect class="p" x="202" y="106" width="66" height="42" rx="4" fill="${C.G}"/>
+          <path class="cur" d="M0 0l0 16 5-5 7 0z" fill="${C.W}"/>`,
+        run(svg) {
+          const parts = $$(".p", svg), cur = $(".cur", svg);
+          return gsap.timeline({ repeat: -1, repeatDelay: .5 })
+            .set(parts, { scale: 0, transformOrigin: "0% 50%" })
+            .fromTo(cur, { x: 60, y: 40 }, { x: 250, y: 140, duration: 2.4, ease: "power1.inOut" })
+            .to(parts, { scale: 1, duration: .35, ease: "back.out(1.6)", stagger: .3 }, 0)
+            .to(parts, { opacity: .35, duration: .3, delay: 1.2 })
+            .to(parts, { opacity: 1, duration: .01 })
+            .set(parts, { scale: 0 });
+        }
+      },
+      develop: {
+        svg: () => {
+          const ws = [120, 170, 90, 200, 140, 60];
+          const ind = [0, 20, 40, 20, 40, 0];
+          let s = `<rect x="30" y="20" width="260" height="140" rx="6" fill="none" stroke="${C.G}" stroke-width="1.5"/>`;
+          ws.forEach((w, i) => {
+            s += `<text x="44" y="${48 + i * 20}" fill="#5d6472" font-family="JetBrains Mono" font-size="10">${i + 1}</text>`;
+            s += `<rect class="ln" x="${64 + ind[i]}" y="${40 + i * 20}" width="${w}" height="8" rx="3" fill="${i % 3 === 1 ? C.B : i % 3 === 2 ? C.C2 : C.G}"/>`;
+          });
+          return s + `<rect class="caret" x="0" y="0" width="2" height="12" fill="${C.W}"/>`;
+        },
+        run(svg) {
+          const lines = $$(".ln", svg), caret = $(".caret", svg);
+          const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+          tl.set(lines, { scaleX: 0, transformOrigin: "0% 50%" });
+          lines.forEach(l => {
+            const x = +l.getAttribute("x"), y = +l.getAttribute("y"), w = +l.getAttribute("width");
+            tl.set(caret, { x, y: y - 2 })
+              .to(l, { scaleX: 1, duration: w / 220, ease: "steps(" + Math.round(w / 10) + ")" })
+              .to(caret, { x: x + w + 3, duration: w / 220, ease: "steps(" + Math.round(w / 10) + ")" }, "<");
+          });
+          tl.to(caret, { opacity: 0, duration: .01, repeat: 5, yoyo: true, repeatDelay: .25 });
+          return tl;
+        }
+      },
+      motion: {
+        svg: () => `
+          <path d="M40 150 C120 150 140 30 280 30" fill="none" stroke="${C.G}" stroke-width="2" stroke-dasharray="3 6"/>
+          <line x1="40" y1="165" x2="280" y2="165" stroke="${C.G}" stroke-width="1.5"/>
+          ${[0,1,2,3].map(i => `<rect class="ghost" x="-9" y="-9" width="18" height="18" rx="3" fill="${C.B}" opacity="${.12 + i * .12}"/>`).join("")}
+          <rect class="box" x="-11" y="-11" width="22" height="22" rx="4" fill="${C.W}"/>`,
+        run(svg) {
+          const box = $(".box", svg), ghosts = $$(".ghost", svg);
+          // follow the cubic curve manually
+          const bez = (t, a, b, c, d) => (1 - t) ** 3 * a + 3 * (1 - t) ** 2 * t * b + 3 * (1 - t) * t * t * c + t ** 3 * d;
+          const state = { t: 0 };
+          const place = (el, t) => gsap.set(el, { x: bez(t, 40, 120, 140, 280), y: bez(t, 150, 150, 30, 30), rotation: t * 180 });
+          return gsap.timeline({ repeat: -1, yoyo: true, repeatDelay: .4 })
+            .to(state, { t: 1, duration: 1.6, ease: "power3.inOut", onUpdate() {
+              place(box, state.t);
+              ghosts.forEach((g, i) => place(g, Math.max(0, state.t - (4 - i) * .045)));
+            } });
+        }
+      },
+      test: {
+        svg: () => `
+          <rect class="dev" x="40" y="30" width="150" height="110" rx="6" fill="none" stroke="${C.W}" stroke-width="2"/>
+          <rect class="devbar" x="40" y="30" width="150" height="12" rx="3" fill="${C.G}"/>
+          ${[0,1,2,3].map(i => `<g class="ck" transform="translate(210 ${36 + i * 28})"><rect width="16" height="16" rx="3" fill="none" stroke="${C.G}" stroke-width="1.5"/><path class="tick" d="M3 8l4 4 7-8" fill="none" stroke="${C.B}" stroke-width="2.5" stroke-dasharray="20" stroke-dashoffset="20"/><rect x="24" y="5" width="${50 - i * 6}" height="6" rx="3" fill="${C.G}"/></g>`).join("")}`,
+        run(svg) {
+          const dev = $(".dev", svg), bar = $(".devbar", svg), ticks = $$(".tick", svg);
+          const sizes = [[150, 110], [100, 120], [56, 104]];
+          const tl = gsap.timeline({ repeat: -1, repeatDelay: .6 }).set(ticks, { strokeDashoffset: 20 });
+          sizes.forEach(([w, h], i) => {
+            tl.to([dev, bar], { attr: { width: w, x: 115 - w / 2 }, duration: .6, ease: "power3.inOut" })
+              .to(dev, { attr: { height: h, y: 85 - h / 2 }, duration: .6, ease: "power3.inOut" }, "<")
+              .to(bar, { attr: { y: 85 - h / 2 }, duration: .6, ease: "power3.inOut" }, "<")
+              .to(ticks[i], { strokeDashoffset: 0, duration: .3 });
+          });
+          tl.to(ticks[3], { strokeDashoffset: 0, duration: .3 })
+            .to([dev, bar], { attr: { width: 150, x: 40 }, duration: .6, ease: "power3.inOut", delay: .6 })
+            .to(dev, { attr: { height: 110, y: 30 }, duration: .6 }, "<")
+            .to(bar, { attr: { y: 30 }, duration: .6 }, "<");
+          return tl;
+        }
+      },
+      launch: {
+        svg: () => `
+          <rect x="40" y="20" width="240" height="140" rx="6" fill="none" stroke="${C.G}" stroke-width="1.5"/>
+          <line x1="40" y1="38" x2="280" y2="38" stroke="${C.G}" stroke-width="1.5"/>
+          <rect x="60" y="56" width="200" height="8" rx="4" fill="${C.G}"/>
+          <rect class="prog" x="60" y="56" width="200" height="8" rx="4" fill="${C.B}"/>
+          <path class="graph" d="M60 140 L100 128 L130 132 L170 108 L200 112 L250 80" fill="none" stroke="${C.C2}" stroke-width="3" stroke-dasharray="260" stroke-dashoffset="260"/>
+          <g class="live" opacity="0"><rect x="206" y="86" width="56" height="22" rx="11" fill="#22c55e"/><text x="234" y="101" text-anchor="middle" fill="#fff" font-family="JetBrains Mono" font-size="11" font-weight="500">LIVE</text></g>`,
+        run(svg) {
+          const prog = $(".prog", svg), graph = $(".graph", svg), live = $(".live", svg);
+          return gsap.timeline({ repeat: -1, repeatDelay: .4 })
+            .set(prog, { scaleX: 0, transformOrigin: "0% 50%" }).set(graph, { strokeDashoffset: 260 }).set(live, { opacity: 0, scale: .5, transformOrigin: "50% 50%" })
+            .to(prog, { scaleX: 1, duration: 1.4, ease: "power2.inOut" })
+            .to(live, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" })
+            .to(graph, { strokeDashoffset: 0, duration: 1.1, ease: "power2.out" }, "<")
+            .to({}, { duration: 1.4 })
+            .to([live, graph], { opacity: 0, duration: .3 })
+            .set(graph, { opacity: 1 });
+        }
+      },
+    };
+
+    const stepHTML = (n) => {
+      const s = SITE.process[n - 1];
+      return `
+        <div class="tl_slot"><div class="tl_card">
+          <div class="tl_row"><div class="tl_num"><span class="tl_label">0${n}</span></div><div class="tl_label scr">${s.label}</div><div class="tl_cube_g"></div></div>
+          <div class="tl_anim"><div class="tl_art"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid meet" data-art="${s.art}">${ART[s.art].svg()}</svg></div></div>
+          <div class="tl_row bottom"><div class="tl_num">${icon(s.icon)}</div><div class="tl_name">${s.name}<small>${s.sub}</small></div><div class="tl_cube_g"></div></div>
+          <div class="tl_conn"><i class="v"></i><i class="h"></i></div>
+        </div></div>`;
+    };
+    $$("[data-steps]").forEach(col => col.innerHTML = col.dataset.steps.split(",").map(n => stepHTML(+n)).join(""));
+
+    // run illustration loops only while on screen
+    $$("svg[data-art]").forEach(svg => {
+      const tl = ART[svg.dataset.art].run(svg);
+      if (reduce) return;
+      tl.pause();
+      ScrollTrigger.create({ trigger: svg, start: "top bottom", end: "bottom top", onToggle: s => s.isActive ? tl.resume() : tl.pause() });
+    });
+
+    function scramble(el) {
+      if (!el || reduce) return;
+      if (el._split) el._split.revert();
+      const chars = (el._split = new SplitText(el, { type: "chars" })).chars;
+      chars.forEach((ch, i) => {
+        const t = ch.textContent, up = t === t.toUpperCase() && t !== t.toLowerCase();
+        gsap.to(ch, { duration: .41, scrambleText: { text: t, chars: up ? "upperCase" : "lowerCase", revealDelay: .11 + i / chars.length * .3, speed: 3 } });
+      });
+    }
+
+    /* =====================================================================
+       ORBIT STAGE — shared by About v2 and Experience
+       flow-field streams + a particle shape (portrait / words) + glass cards
+       on the inside of a cylinder that turns while the stage is pinned.
+       ===================================================================== */
+    const COLORS = ["#173fa8", "#2156d6", "#2b6ef2", "#3d8bff", "#5fb0ff", "#8fcaff", "#bfe4ff", "#eaf6ff"];
+    const pad2 = s => String(s).padStart(2, "0");
+
+    // word shape: draw the word on an offscreen canvas and sample its pixels
+    function wordShape(word, W, H, mobile, count) {
+      const rw = Math.round(mobile ? W * .9 : W * .5), rh = Math.round(mobile ? H * .26 : H * .5);
+      const c = document.createElement("canvas"); c.width = rw; c.height = rh;
+      const x = c.getContext("2d");
+      let fs = rh * .8;
+      x.font = `600 ${fs}px "Inter Tight", Inter, Arial, sans-serif`;
+      fs = Math.min(fs, fs * (rw * .92) / x.measureText(word).width);
+      x.font = `600 ${fs}px "Inter Tight", Inter, Arial, sans-serif`;
+      x.textAlign = "center"; x.textBaseline = "middle"; x.fillStyle = "#fff";
+      x.fillText(word, rw / 2, rh / 2);
+      const data = x.getImageData(0, 0, rw, rh).data, all = [], g = 2;
+      for (let yy = 0; yy < rh; yy += g) for (let xx = 0; xx < rw; xx += g) if (data[(yy * rw + xx) * 4 + 3] > 140) all.push([xx, yy]);
+      const ox = (mobile ? W * .5 : W * .72) - rw / 2, oy = mobile ? H * .03 : H * .5 - rh / 2 + 30;   // +30 keeps the word level with the cards
+      const pts = [];
+      for (let i = 0; i < count && all.length; i++) {
+        const p = all[(Math.random() * all.length) | 0];
+        pts.push({ x: ox + p[0] + Math.random() * g, y: oy + p[1] + Math.random() * g, v: 110 + Math.random() * 146, row: p[1] / rh });
+      }
+      return { pts, cell: 3.2 };
+    }
+
+    function orbitStage({ root, cards: cardHTML, shapes, cardShape = [], onIndex }) {
+      const stage = $(".orbit_stage", root), spin = $(".orbit_spin", root);
+      if (!stage) return;
+      const n = cardHTML.length;
+      spin.innerHTML = cardHTML.join("");
+      const cards = $$(".orbit_card", spin), countEl = $(".orbit_count", root), bar = $(".orbit_bar", root);
+      const flowC = $(".orbit_flow", root), fctx = flowC.getContext("2d");
+      const porC = $(".orbit_portrait", root), pctx = porC.getContext("2d");
+      const DPR = Math.min(devicePixelRatio || 1, 1.75);
+
+      let R = 1000, step = 30, W = 0, H = 0, mobile = false, lastP = 0, lastIdx = -1;
+      let shapeList = [], parts = [], buckets = [], cell = 4;
+      let cur = 0, want = 0, morphing = false, morphT0 = 0, assemble = reduce ? 1 : 0;
+      let mx = -1e4, my = -1e4, running = false, tNow = 0;
+      const t0 = performance.now();
+
+      /* ---- particles: one pool, each particle has a target in every shape ---- */
+      function buildParticles() {
+        shapeList = shapes(W, H, mobile);
+        const N = Math.max(...shapeList.map(s => s.pts.length), 0);
+        const base = shapeList[0] ? shapeList[0].pts : [];
+        if (parts.length !== N) {
+          parts = Array.from({ length: N }, (_, i) => {
+            const a = Math.random() * Math.PI * 2, dist = (.35 + Math.random() * .8);
+            const v = base.length ? base[i % base.length].v : 200;
+            return { a, dist, v, delay: 0, mdelay: Math.random() * .5, ph: Math.random() * 6.28, ox: 0, oy: 0, cx: 0, cy: 0, fx: 0, fy: 0, tx: 0, ty: 0 };
+          });
+          buckets = COLORS.map(() => []);
+          parts.forEach(p => buckets[Math.min(COLORS.length - 1, (p.v / 256 * COLORS.length) | 0)].push(p));
+        }
+        parts.forEach((p, i) => {
+          const pt = base[i % (base.length || 1)] || { x: W / 2, y: H / 2, row: 0 };
+          p.sx = W * .72 + Math.cos(p.a) * p.dist * Math.max(W, H);
+          p.sy = H * .5 + Math.sin(p.a) * p.dist * Math.max(W, H) * .6;
+          p.delay = Math.random() * .45 + pt.row * .25;
+        });
+        retarget(cur, true);
+      }
+      function retarget(s, snap) {
+        const sh = shapeList[s]; if (!sh || !sh.pts.length) return;
+        cell = sh.cell;
+        parts.forEach((p, i) => {
+          const pt = sh.pts[i % sh.pts.length];
+          p.fx = p.cx; p.fy = p.cy; p.tx = pt.x; p.ty = pt.y;
+          if (snap) { p.cx = p.fx = p.tx; p.cy = p.fy = p.ty; }
+        });
+      }
+
+      /* ---- geometry: cards on the inside of a cylinder, viewer near its centre ---- */
+      function layout() {
+        W = stage.clientWidth; H = stage.clientHeight; mobile = innerWidth < 768;
+        flowC.width = W; flowC.height = H;
+        porC.width = W * DPR; porC.height = H * DPR; pctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        const fs = parseFloat(getComputedStyle(document.body).fontSize);
+        const cw = mobile ? Math.min(W - 48, 20 * fs) : 25 * fs;
+        R = mobile ? Math.max(520, W * 1.5) : Math.max(900, W * .78);
+        step = 2 * Math.asin(Math.min(.95, (cw * 1.12) / 2 / R)) * 180 / Math.PI;
+        spin.style.setProperty("--cw", cw + "px");
+        cards.forEach((c, i) => { c.style.setProperty("--a", (-i * step) + "deg"); c.style.setProperty("--r", R + "px"); });
+        buildParticles();
+        setRot(lastP);
+        if (reduce) requestAnimationFrame(frame);
+      }
+      function setRot(p) {
+        lastP = p;
+        const rot = p * (n - 1) * step;                       // upcoming cards arrive from the right
+        spin.style.transform = `translateZ(${R * .88}px) rotateY(${rot}deg)`;
+        cards.forEach((c, i) => {
+          const d = Math.abs(rot - i * step) / step;          // distance from the front, in cards
+          c.style.opacity = Math.max(0, Math.min(1, 1.6 - d * .75));
+          c.style.visibility = d > 2.3 ? "hidden" : "visible";
+        });
+        const idx = Math.min(n - 1, Math.round(p * (n - 1)));
+        if (idx !== lastIdx) {
+          lastIdx = idx;
+          countEl.textContent = `${pad2(idx + 1)} / ${pad2(n)}`;
+          want = cardShape[idx] || 0;
+          onIndex && onIndex(idx, want);
+          if (reduce && want !== cur) { cur = want; retarget(cur, true); requestAnimationFrame(frame); }
+        }
+        bar.style.transform = `scaleX(${p})`;
+      }
+
+      /* ---- render loop ---- */
+      const streams = Array.from({ length: innerWidth < 768 ? 450 : 900 }, () => ({ x: 0, y: 0, life: 0, c: 0 }));
+      const respawn = s => { s.x = Math.random() * W; s.y = Math.random() * H; s.life = 60 + Math.random() * 160; s.c = (Math.random() * 5) | 0; };
+      const sparks = Array.from({ length: 160 }, () => ({ x: 0, y: 0, t: 1, vy: 0, vx: 0 }));
+      stage.addEventListener("pointermove", e => { const r = stage.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
+      stage.addEventListener("pointerleave", () => { mx = my = -1e4; });
+      const ease = t => 1 - Math.pow(1 - t, 3), clamp = v => v < 0 ? 0 : v > 1 ? 1 : v;
+
+      function frame(now) {
+        const t = tNow = (now - t0) / 1000;
+        if (want !== cur && !reduce) { cur = want; retarget(cur, false); morphing = true; morphT0 = t; }
+        if (morphing && t - morphT0 > 1.6) morphing = false;
+
+        fctx.globalCompositeOperation = "destination-out";
+        fctx.fillStyle = "rgba(0,0,0,.07)"; fctx.fillRect(0, 0, W, H);
+        fctx.globalCompositeOperation = "lighter"; fctx.lineWidth = 1;
+        for (const s of streams) {
+          if (s.life <= 0) respawn(s);
+          const ang = Math.sin(s.x * .0032 + t * .25) * 1.3 + Math.cos(s.y * .0041 - t * .18) * 1.1 + Math.sin((s.x + s.y) * .0015) - .5;
+          const nx = s.x + Math.cos(ang) * 1.6, ny = s.y + Math.sin(ang) * 1.6;
+          fctx.strokeStyle = COLORS[s.c + 1] + "55";
+          fctx.beginPath(); fctx.moveTo(s.x, s.y); fctx.lineTo(nx, ny); fctx.stroke();
+          s.x = nx; s.y = ny; s.life--;
+          if (nx < 0 || ny < 0 || nx > W || ny > H) s.life = 0;
+        }
+
+        pctx.clearRect(0, 0, W, H);
+        pctx.globalCompositeOperation = "lighter";
+        const size = Math.max(1.2, cell * .62), R2 = (mobile ? 50 : 80) ** 2, drift = cell * .35;
+        buckets.forEach((list, bi) => {
+          pctx.fillStyle = COLORS[bi];
+          pctx.globalAlpha = .35 + bi * .09;
+          for (const p of list) {
+            let bx, by;
+            if (morphing) {               // shape → shape
+              const k = ease(clamp((t - morphT0 - p.mdelay) / .9));
+              bx = p.fx + (p.tx - p.fx) * k; by = p.fy + (p.ty - p.fy) * k;
+            } else {                      // scattered → shape, driven by scroll
+              const k = ease(clamp((assemble - p.delay * .7) / .45));
+              bx = p.sx + (p.tx - p.sx) * k; by = p.sy + (p.ty - p.sy) * k;
+            }
+            p.cx = bx; p.cy = by;
+            const x = bx + Math.sin(t * .9 + p.ph) * drift, y = by + Math.cos(t * .7 + p.ph) * drift;
+            const dx = x - mx, dy = y - my, dd = dx * dx + dy * dy;
+            let ux = 0, uy = 0;
+            if (dd < R2) { const f = (1 - dd / R2) * 28 / Math.sqrt(dd + 1); ux = dx * f; uy = dy * f; }
+            p.ox += (ux - p.ox) * .12; p.oy += (uy - p.oy) * .12;
+            pctx.fillRect(x + p.ox, y + p.oy, size, size);
+          }
+        });
+        if (assemble > .8 && !morphing && parts.length) {
+          pctx.fillStyle = "#bfe4ff";
+          for (const s of sparks) {
+            if (s.t >= 1) { const p = parts[(Math.random() * parts.length) | 0]; s.x = p.tx; s.y = p.ty; s.t = Math.random() * -.8; s.vy = -(.25 + Math.random() * .6); s.vx = (Math.random() - .3) * .35; }
+            s.t += .006;
+            if (s.t < 0) continue;
+            s.x += s.vx; s.y += s.vy;
+            pctx.globalAlpha = Math.sin(s.t * Math.PI) * .8;
+            pctx.fillRect(s.x, s.y, size * .9, size * .9);
+          }
+        }
+        pctx.globalAlpha = 1; pctx.globalCompositeOperation = "source-over";
+        if (running) requestAnimationFrame(frame);
+      }
+      const start = () => { if (!running) { running = true; requestAnimationFrame(frame); } };
+      const stop = () => { running = false; };
+
+      layout();
+      addEventListener("resize", () => { clearTimeout(layout._t); layout._t = setTimeout(layout, 150); });
+      if (document.fonts) document.fonts.ready.then(layout);       // words need the real font
+
+      // particles gather while the section scrolls into view
+      ScrollTrigger.create({ trigger: root, start: "top 85%", end: "top top", scrub: true,
+        onUpdate: self => { if (!reduce) assemble = self.progress; } });
+      // pin the stage and turn the ring of cards
+      const proxy = { p: 0 };
+      gsap.to(proxy, {
+        p: 1, ease: "none", onUpdate: () => setRot(proxy.p),
+        scrollTrigger: {
+          trigger: stage, start: "top top", end: () => "+=" + innerHeight * (n - 1) * .75,
+          pin: true, scrub: reduce ? true : 1, refreshPriority: 1, anticipatePin: 1,
+        },
+      });
+      // run the canvas loop only while visible — measured on the whole section (it includes
+      // the pinned scroll distance), not on the stage, which would "leave" as soon as it pins
+      ScrollTrigger.create({ trigger: root, start: "top bottom", end: "bottom top", onToggle: self => {
+        if (!self.isActive) return stop();
+        if (reduce) requestAnimationFrame(frame); else start();
+      } });
+    }
+
+    function buildOrbits() {
+      /* Experience — work → skills → education, particles spell each part */
+      const root = $("#experience");
+      if (root) {
+        const LEVEL = { Expert: 100, Advanced: 85, Intermediate: 65, Basic: 35 };
+        const groups = [...new Set(SITE.skills.map(s => s.group))];
+        const total = SITE.experience.length + groups.length + SITE.education.length;
+        let k = 0;
+        const head = label => `<div class="k"><span>${label}</span><span>${pad2(++k)} / ${pad2(total)}</span></div>`;
+        const cards = [
+          ...SITE.experience.map(x => `<article class="orbit_card">${head("Work experience")}
+              <h3>${x.company}</h3><div class="role">${x.role}</div>
+              <div class="meta"><span>📍 ${x.place}</span>${x.period ? `<span class="${/present/i.test(x.period) ? "now" : ""}">${x.period}</span>` : ""}</div>
+              ${x.text ? `<p>${x.text}</p>` : ""}</article>`),
+          ...groups.map(g => `<article class="orbit_card">${head("Skills")}
+              <h3>${g}</h3>
+              ${SITE.skills.filter(s => s.group === g).map(s => `<div class="sk"><div><span>${s.name}</span><em>${s.level}</em></div><b><i style="--w:${LEVEL[s.level] || 50}%"></i></b></div>`).join("")}</article>`),
+          ...SITE.education.map(e => `<article class="orbit_card">${head("Education")}
+              <h3>${e.title}</h3><p>${e.place}</p><div class="year">${e.year}</div></article>`),
+        ];
+        const cardShape = [
+          ...SITE.experience.map(() => 0), ...groups.map(() => 1), ...SITE.education.map(() => 2),
+        ];
+        const tabs = $$(".orbit_parts span", root);
+        orbitStage({
+          root, cards, cardShape,
+          shapes: (W, H, m) => { const c = m ? 2200 : 4200; return ["Work", "Skills", "Education"].map(w => wordShape(w, W, H, m, c)); },
+          onIndex: (idx, part) => tabs.forEach((t, i) => t.classList.toggle("on", i === part)),
+        });
+      }
+      ScrollTrigger.refresh();
+    }
+
+    buildOrbits(); // runs in both modes (static frame for reduced motion)
+
+    if (reduce) return; // static page for reduced-motion users
+
+    /* =====================================================================
+       SMOOTH SCROLL + GENERAL REVEALS
+       ===================================================================== */
+    const lenis = new Lenis({ lerp: .1, autoRaf: false });
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(t => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+    $$('a[href^="#"]').forEach(a => a.addEventListener("click", e => {
+      const id = a.getAttribute("href");
+      if (id.length > 1 && $(id)) { e.preventDefault(); lenis.scrollTo(id === "#top" ? 0 : id, { offset: -20, duration: 1.4 }); }
+    }));
+
+    // hero intro
+    gsap.from(".hero_in", { y: 40, opacity: 0, duration: 1, ease: "power3.out", stagger: .1, delay: .15 });
+    gsap.from(".nav", { y: -30, opacity: 0, duration: .9, ease: "power3.out" });
+    gsap.from(".tile", { z: 120, opacity: 0, duration: 1.1, ease: "power3.out", stagger: .07, delay: .5 });
+    $$(".tile:not(.core)").forEach((t, i) => gsap.to(t, { z: 14, duration: 1.8 + i * .2, ease: "sine.inOut", repeat: -1, yoyo: true, delay: i * .3 }));
+    gsap.to(".tile.core", { z: 20, duration: 2.4, ease: "sine.inOut", repeat: -1, yoyo: true });
+    $$(".iso_lines .flow").forEach((p, i) => gsap.fromTo(p, { strokeDashoffset: 960 }, { strokeDashoffset: 0, duration: 2.6, ease: "none", repeat: -1, delay: i * .4 }));
+    gsap.to(".iso", { yPercent: -10, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
+
+    // generic reveal
+    ScrollTrigger.batch(".reveal", {
+      start: "top 88%",
+      onEnter: els => gsap.to(els, { opacity: 1, y: 0, duration: .9, ease: "power3.out", stagger: .08 }),
+    });
+
+    // count-up stats
+    $$("[data-count]").forEach(el => {
+      const raw = el.dataset.count, n = parseFloat(raw), suffix = raw.replace(/[\d.]/g, "");
+      if (isNaN(n)) return;
+      const o = { v: 0 };
+      ScrollTrigger.create({ trigger: el, start: "top 90%", once: true,
+        onEnter: () => gsap.to(o, { v: n, duration: 1.6, ease: "power2.out", onUpdate: () => el.textContent = Math.round(o.v) + suffix }) });
+    });
+
+    // marquee
+    const track = $("#toolTrack");
+    const mq = gsap.to(track, { xPercent: -50, duration: 30, ease: "none", repeat: -1 });
+    track.addEventListener("mouseenter", () => gsap.to(mq, { timeScale: .2, duration: .5 }));
+    track.addEventListener("mouseleave", () => gsap.to(mq, { timeScale: 1, duration: .5 }));
+
+    // magnetic buttons
+    $$(".btn").forEach(b => {
+      const xTo = gsap.quickTo(b, "x", { duration: .4, ease: "power3" }), yTo = gsap.quickTo(b, "y", { duration: .4, ease: "power3" });
+      b.addEventListener("mousemove", e => { const r = b.getBoundingClientRect(); xTo((e.clientX - r.left - r.width / 2) * .2); yTo((e.clientY - r.top - r.height / 2) * .3); });
+      b.addEventListener("mouseleave", () => { xTo(0); yTo(0); });
+    });
+
+    /* =====================================================================
+       HOW IT WORKS — Sui-style rail (sticky cube, card open, velocity trail)
+       ===================================================================== */
+    ScrollTrigger.create({ trigger: ".process_head", start: "top 75%", once: true, onEnter: () => {
+      gsap.from(".process_head > *", { y: 40, opacity: 0, duration: 1, ease: "power3.out", stagger: .12 });
+      scramble($(".scr-head"));
+    } });
+
+    // every card: closed until it reaches the middle of the screen
+    const mobileLayout = matchMedia("(max-width: 767px)").matches;
+    $$(mobileLayout ? ".tl_main.mobile .tl_slot" : "#tlDesktop .tl_slot").forEach(slot => {
+      const anim = $(".tl_anim", slot), art = $(".tl_art", slot), bottom = $(".tl_row.bottom", slot);
+      const isMobileList = !!slot.closest(".tl_main.mobile");
+      gsap.set(anim, { height: 0 });
+      gsap.set(art, { transformOrigin: "bottom center" });
+      let tl;
+      const open = () => {
+        tl && tl.kill();
+        tl = gsap.timeline({ defaults: { ease: "power2.out" } })
+          .to(anim, { height: () => getComputedStyle(art).height, duration: .45 }, 0)
+          .fromTo(art, { scale: .7, opacity: 0 }, { scale: 1, opacity: 1, duration: .5 }, "<")
+          .add(() => { if (!isMobileList) gsap.set(bottom, { borderTop: "1.5px solid #3a3f48" }); scramble($(".scr", slot)); }, 0);
+      };
+      const close = () => {
+        tl && tl.kill();
+        tl = gsap.timeline({ defaults: { ease: "power2.out" } })
+          .to(art, { scale: .7, opacity: 0, duration: .45 }, 0)
+          .to(anim, { height: 0, duration: .5, onComplete: () => { if (!isMobileList) gsap.set(bottom, { borderTop: "0px solid transparent" }); } }, "<");
+      };
+      ScrollTrigger.create({ trigger: slot, start: isMobileList ? "top 80%" : "top 55%", onEnter: open, onLeaveBack: close });
+    });
+
+    (function rail() {
+      const main = $("#tlDesktop");
+      const current = $(".tl_current", main), dots = $(".tl_dots", main), rail = $(".tl_rail", main);
+      const top = $(".tl_trail.top", main), bot = $(".tl_trail.bottom", main);
+      const trail = { top: 0, bottom: 0 };
+      let active = false, idle, tw;
+      const apply = () => { top.style.height = trail.top + "%"; bot.style.height = trail.bottom + "%"; };
+      const reset = () => { tw && tw.kill(); gsap.to(trail, { top: 0, bottom: 0, duration: .6, onUpdate: apply }); };
+
+      // while the cube travels, the dotted rail is only visible in a window around it
+      const clip = () => {
+        if (!main.offsetParent) return;
+        if (!active) { dots.style.clipPath = "none"; return; }
+        const c = current.getBoundingClientRect(), d = dots.getBoundingClientRect();
+        const t = Math.max(0, c.top - d.top), b = Math.min(d.height, c.bottom - d.top);
+        dots.style.clipPath = `inset(${t}px 0 ${Math.max(0, d.height - b)}px 0)`;
+      };
+      gsap.ticker.add(clip);
+
+      ScrollTrigger.create({
+        trigger: rail, start: "top center", end: "bottom center",
+        onToggle: s => { active = s.isActive; if (!active) reset(); },
+        onUpdate: s => {
+          if (!active) return;
+          const v = lenis.velocity || 0, sp = Math.abs(v), p = s.progress;
+          const fade = Math.min(p > .85 ? gsap.utils.mapRange(.85, 1, 1, 0, p) : 1, p < .15 ? gsap.utils.mapRange(0, .15, 0, 1, p) : 1);
+          if (sp > .5) {
+            tw && tw.kill();
+            const len = Math.min(2 * sp * fade, 50 * fade);
+            tw = gsap.to(trail, { ...(v > 0 ? { top: len, bottom: 0 } : { top: 0, bottom: len }), duration: .3, ease: "power2.out", onUpdate: apply });
+          }
+        }
+      });
+      lenis.on("scroll", ({ velocity }) => {
+        clearTimeout(idle);
+        if (Math.abs(velocity) < .1 && active) idle = setTimeout(reset, 100);
+      });
+    })();
+
+    document.fonts.ready.then(() => ScrollTrigger.refresh());
+    window.addEventListener("load", () => ScrollTrigger.refresh());
+  })();
+  </script>
+</body>
+</html>
